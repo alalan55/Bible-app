@@ -1,0 +1,1 @@
+export { default as Biblia} from './Biblia.vue'

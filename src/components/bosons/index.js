@@ -1,0 +1,1 @@
+export { default as ContainerBiblias} from './ContainerBiblias.vue'
