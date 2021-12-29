@@ -1,10 +1,11 @@
 import { createRouter, createWebHashHistory } from "vue-router";
+import Home from '@/views/Home.vue'
 
 const routes = [
   {
     path: "/",
     name: "Home",
-    component:  import(/* webpackChunkName: "home" */ "../views/Home.vue"),
+    component:  Home
   },
   {
     path: "/bibles",
@@ -12,6 +13,12 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "bibles" */ "../views/Bibles.vue"),
   },
+  {
+    path: "/livros/:id",
+    name: 'Livros',
+    component: () =>
+      import(/* webpackChunkName: "livros" */ "../views/Livros.vue"),
+  }
 ];
 
 const router = createRouter({
