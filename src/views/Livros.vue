@@ -1,12 +1,13 @@
 <template>
   <div>
-    <Livrostemplate />
+    <Livrostemplate  :name="name" :dados="arrayData" />
   </div>
 </template>
 
 <script>
 import { useRoute } from "vue-router";
-import http from '@/service'
+import { ref } from "vue";
+import http from "@/service";
 import { Livrostemplate } from "@/components/templates";
 
 export default {
@@ -14,22 +15,28 @@ export default {
     Livrostemplate,
   },
 
-  setup(){
-      const route = useRoute();
-      const id = route.params.id
-      const searchBooksBible =  async() =>{
-          try {
-              let req = await http.get(`/bibles/${id}/books`);
-              let {data} = req;
+  setup() {
+    const route = useRoute();
+    const id = route.params.id;
+    const arrayData = ref([]);
+    const name = route.params.name
 
-              console.log(data)
-          } catch (error) {
-              console.error(error)
-          }
+    const searchBooksBible = async () => {
+        
+      try {
+        let req = await http.get(`/bibles/${id}/books`);
+        let { data } = req;
+        arrayData.value = data.data;
+       
+      } catch (error) {
+        console.error(error);
       }
-      searchBooksBible()
-      return{}
-  }
+ 
+    };
+    searchBooksBible();
+    
+    return { arrayData, name };
+  },
 };
 </script>
 
