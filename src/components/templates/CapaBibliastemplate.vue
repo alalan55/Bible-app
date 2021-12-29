@@ -24,7 +24,7 @@
           v-for="data in dataset"
           :key="data.id"
           :dados="data"
-          @click="goToBible(data.id)"
+          @click="goToBible(data.id, data.language.name)"
         />
       </ContainerBiblias>
     </div>
@@ -46,17 +46,22 @@ export default {
     let dataset = ref([]);
 
     const initDataSet = () => {
+      console.log(props.dados, 'valores chegando aqui')
       setTimeout(() => {
+        console.log(props.dados.length, 'verificar porque da 0 as vezes')
         if (props.dados.length) {
           dataset.value = props.dados;
           loading.value = false;
+        }else{
+           dataset.value = props.dados;
+            loading.value = false;
         }
       }, 1000);
     };
     initDataSet();
 
-    const goToBible = (id) => {
-        router.push({name: 'Livros', params:{id: id}})
+    const goToBible = (id, name) => {
+        router.push({name: 'Livros', params:{id: id, name:name}})
     };
 
     return { dataset, loading, goToBible };
