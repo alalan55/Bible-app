@@ -1,6 +1,6 @@
 <template>
   <div class="bibles">
-    <CapaBibliastemplate :dados="dados" />
+    <CapaBibliastemplate :dados="dados" @reloadData="reloadDados" />
   </div>
 </template>
 
@@ -19,15 +19,20 @@ export default {
         let req = await http.get("/bibles");
         let { data } = req;
         dados.value = data.data;
-
       } catch (error) {
         console.error(error);
       }
     };
+
+    const reloadDados = () =>{
+      
+    }
     inidData();
+
 
     return {
       dados,
+      reloadDados,
     };
   },
 };

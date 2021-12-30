@@ -1,5 +1,5 @@
 <template>
-     <div class="capa">
+  <div class="capa">
     <div class="conteudo-capa">
       <div class="textos">
         <div class="title">
@@ -7,26 +7,26 @@
         </div>
         <div class="descricao">
           <p>
-            Você selecionou uma bíblia em <span class="strong">{{name}}</span>
+            Você selecionou uma bíblia em <span class="strong">{{ name }}</span>
           </p>
         </div>
       </div>
-        <ListaLivros :livrosData="dados"/>
+      <ListaLivros :livrosData="dados" />
     </div>
   </div>
 </template>
 
 <script>
-import {ListaLivros} from '@/components/organisms'
-    export default {
-        props:{
-            dados:{type: Array, default: undefined},
-            name: {type: String, default: ''}
-        },
-        components:{
-            ListaLivros
-        }
-    }
+import { ListaLivros } from "@/components/organisms";
+export default {
+  props: {
+    dados: { type: Array, default: undefined },
+    name: { type: String, default: "" },
+  },
+  components: {
+    ListaLivros,
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -52,8 +52,8 @@ import {ListaLivros} from '@/components/organisms'
           font-weight: 300;
           letter-spacing: 0.05em;
         }
-        .strong{
-            font-weight: 700;
+        .strong {
+          font-weight: 700;
         }
       }
     }
