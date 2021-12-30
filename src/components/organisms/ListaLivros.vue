@@ -2,7 +2,7 @@
   <div class="lista">
     <div class="content">
       <ul>
-        <li v-for="item in livrosData" :key="item.id">
+        <li v-for="item in livrosData" :key="item.id" @click="goChapters(item)">
           <span>
             {{ item.name }}
           </span>
@@ -13,12 +13,19 @@
 </template>
 
 <script>
+import {useRouter} from 'vue-router'
 export default {
   props: {
     livrosData: { type: Array, default: undefined },
   },
   setup() {
-    return {};
+    const router = useRouter();
+
+    const goChapters = (item) => {
+      console.log(item)
+      router.push({name: 'PaginaLivro', params:{id: item.bibleId, bookId: item.id, title: item.nameLong }})
+    };
+    return { goChapters };
   },
 };
 </script>
@@ -31,21 +38,21 @@ export default {
     width: 100%;
     height: 70vh;
     overflow-y: auto;
-    margin: var( --top-bottom2) 0;
+    margin: var(--top-bottom2) 0;
 
     &::-webkit-scrollbar {
-  width: 10px;
-}
+      width: 10px;
+    }
 
-/* Track */
-&::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
 
-/* Handle */
-&::-webkit-scrollbar-thumb {
-  background: #888;
-}
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+    }
     ul {
       list-style: none;
       padding: 0;
@@ -61,8 +68,8 @@ export default {
           font-size: 1.5em;
           cursor: pointer;
 
-          &:hover{
-              color: rgb(67, 163, 228);
+          &:hover {
+            color: rgb(67, 163, 228);
           }
         }
       }

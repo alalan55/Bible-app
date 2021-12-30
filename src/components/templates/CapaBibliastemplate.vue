@@ -19,6 +19,12 @@
           <img src="@/assets/gifs/loading.gif" alt="loading" />
         </figure>
 
+        <div class="btn-reload" v-if="!loading && dataset.lenght == 0" @click="reloadData">
+          <span>
+              Ops, recarregue novamente!
+          </span>
+        </div>
+
         <Biblia
           class="bible"
           v-for="data in dataset"
@@ -40,21 +46,23 @@ export default {
   props: {
     dados: { type: Array, default: undefined },
   },
-  setup(props) {
+  setup(props, {emit}) {
     const router = useRouter();
     let loading = ref(true);
     let dataset = ref([]);
 
+    const reloadData = () =>{
+      emit('reloadData')
+    }
+
     const initDataSet = () => {
-      console.log(props.dados, 'valores chegando aqui')
       setTimeout(() => {
         console.log(props.dados.length, 'verificar porque da 0 as vezes')
         if (props.dados.length) {
           dataset.value = props.dados;
           loading.value = false;
         }else{
-           dataset.value = props.dados;
-            loading.value = false;
+          loading.value = false
         }
       }, 1000);
     };
@@ -64,11 +72,12 @@ export default {
         router.push({name: 'Livros', params:{id: id, name:name}})
     };
 
-    return { dataset, loading, goToBible };
+    return { dataset, loading, goToBible, reloadData };
   },
   components: {
     ContainerBiblias,
     Biblia,
+    
   },
 };
 </script>
@@ -109,6 +118,22 @@ export default {
 
       .bible {
         flex: 0 0 300px;
+      }
+
+      .btn-reload{
+        padding: .4rem .6rem;
+        text-align: center;
+        justify-content: center;
+        text-align: center;
+        border-radius: 10px;
+        color: white;
+        background: var(--blue1);
+        cursor: pointer;
+        transition: .2s ease-in;
+
+        &:hover{
+          background: var(--blue2);
+        }
       }
     }
   }
