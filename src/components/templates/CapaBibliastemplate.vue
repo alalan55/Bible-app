@@ -20,6 +20,7 @@
           v-if="dataSetLength"
           v-model="filterName"
           @input="dataFiltered"
+          @keypress="onKeyPress"
         />
       </div>
       <ContainerBiblias class="container-biblias">
@@ -99,6 +100,12 @@ export default {
     const goToBible = (id, name) => {
       router.push({ name: "Livros", params: { id: id, name: name } });
     };
+    
+    const onKeyPress = (e) =>{
+      if(e.key == 'Enter'){
+        dataFiltered()
+      }
+    }
 
     return {
       dataset,
@@ -109,6 +116,7 @@ export default {
       dataFiltered,
       filterName,
       filtered,
+      onKeyPress
     };
   },
   components: {
