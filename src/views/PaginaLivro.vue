@@ -10,7 +10,8 @@
         </span>
       </div>
 
-      <CapitulosTemplate class="capitulos" :versesData="dados" />
+      <CapitulosTemplate class="capitulos" :versesData="dados" @chosenVerse="chosenVerse" />
+      <VersoTemplate :verseChosen="versoEscolhido"/>
 
       <router-view></router-view>
     </div>
@@ -40,10 +41,11 @@ import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
 import http from "@/service";
 
-import { CapitulosTemplate } from "@/components/templates";
+import { CapitulosTemplate, VersoTemplate } from "@/components/templates";
 export default {
   components: {
     CapitulosTemplate,
+    VersoTemplate
   },
   setup() {
     const route = useRoute();
@@ -53,10 +55,14 @@ export default {
     const bookId = route.params.bookId;
     const nameBook = route.params.nameBook;
     const dados = ref([]);
+    const versoEscolhido = ref({})
 
     const goBack = () => {
       router.go(-1);
     };
+    const chosenVerse = (data) =>{
+      versoEscolhido.value = data
+    }
 
     const initData = async () => {
       let req = await http.get(`bibles/${id}/books/${bookId}/chapters`);
@@ -64,7 +70,7 @@ export default {
       dados.value = data.data;
     };
     initData();
-    return { msg, nameBook, goBack, dados };
+    return { msg, nameBook, goBack, dados, chosenVerse, versoEscolhido };
   },
 };
 </script>

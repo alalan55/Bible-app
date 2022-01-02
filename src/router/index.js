@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Home from '@/views/Home.vue'
-import Verso from '../components/templates/VersoTemplate.vue'
+//import Verso from '../components/templates/VersoTemplate.vue'
 
 const routes = [
   {
@@ -25,14 +25,14 @@ const routes = [
     name: 'PaginaLivro',
     component: () =>
       import(/* webpackChunkName: "paginaLivro" */ "../views/PaginaLivro.vue"),
-      children: [
-        {
-          path: 'verso',
-          name: 'Verso',
-          component: Verso
-         // component: (/* webpackChunkName: "versoLivro" */ "../components/templates/VersoTemplate.vue")
-        }
-      ]
+      // children: [
+      //   {
+      //     path: 'verso',
+      //     name: 'Verso',
+      //     component: Verso
+      //    // component: (/* webpackChunkName: "versoLivro" */ "../components/templates/VersoTemplate.vue")
+      //   }
+      // ]
   },
 ];
 

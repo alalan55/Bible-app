@@ -4,7 +4,6 @@
       <span>Selecione um capítulo</span>
     </div>
 
-
     <div class="cards-capitulos">
       <div
         class="card"
@@ -19,15 +18,14 @@
 </template>
 
 <script>
-import { useRouter } from "vue-router";
 export default {
   props: {
     versesData: { type: Array, default: undefined },
   },
-  setup() {
-    const router = useRouter();
+  setup(props, { emit }) {
     const goVerse = (item) => {
-      router.push({ name: "Verso", params: {bibleId: item.bibleId, id: item.id} });
+      const params = { bibleId: item.bibleId, id: item.id };
+      emit("chosenVerse", params);
     };
     return { goVerse };
   },

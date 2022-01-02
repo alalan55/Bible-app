@@ -24,8 +24,9 @@ export default {
       }
     };
 
-    const reloadDados = () =>{
-      
+    const reloadDados = async () =>{
+      console.log('reloading...')
+      inidData();
     }
     inidData();
 
