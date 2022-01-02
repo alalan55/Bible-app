@@ -48,6 +48,8 @@ export default {
 
 <style lang="scss" scoped>
 .content {
+  z-index: 9999999 !important;
+  position: absolute;
   .blur {
     position: fixed;
     top: 0;

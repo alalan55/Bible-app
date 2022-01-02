@@ -13,21 +13,31 @@
             praesentium at maiores reiciendis!
           </p>
         </div>
+        <input
+          type="text"
+          class="bible-input"
+          placeholder="Ex: Português"
+          v-if="dataSetLength"
+          v-model="filterName"
+          @input="dataFiltered"
+        />
       </div>
       <ContainerBiblias class="container-biblias">
         <figure v-if="loading">
           <img src="@/assets/gifs/loading.gif" alt="loading" />
         </figure>
 
-        <div class="btn-reload" v-if="!loading && dataset.lenght == 0" @click="reloadData">
-          <span>
-              Ops, recarregue novamente!
-          </span>
+        <div
+          class="btn-reload"
+          v-if="!loading && !dataSetLength"
+          @click="reloadData"
+        >
+          <span> Ops, recarregue novamente! </span>
         </div>
 
         <Biblia
           class="bible"
-          v-for="data in dataset"
+          v-for="data in filtered"
           :key="data.id"
           :dados="data"
           @click="goToBible(data.id, data.language.name)"
@@ -38,7 +48,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { ContainerBiblias } from "@/components/bosons";
 import { Biblia } from "@/components/molecules";
@@ -46,43 +56,76 @@ export default {
   props: {
     dados: { type: Array, default: undefined },
   },
-  setup(props, {emit}) {
+  setup(props, { emit }) {
     const router = useRouter();
     let loading = ref(true);
     let dataset = ref([]);
+    let filtered = ref([]);
+    let filterName = ref("");
 
-    const reloadData = () =>{
-      emit('reloadData')
-    }
+    const reloadData = () => {
+      emit("reloadData");
+    };
 
     const initDataSet = () => {
       setTimeout(() => {
-        console.log(props.dados.length, 'verificar porque da 0 as vezes')
+        console.log(props.dados.length, "verificar porque da 0 as vezes");
         if (props.dados.length) {
           dataset.value = props.dados;
+          filtered.value = dataset.value;
           loading.value = false;
-        }else{
-          loading.value = false
+        } else {
+          loading.value = false;
         }
       }, 1000);
     };
     initDataSet();
 
-    const goToBible = (id, name) => {
-        router.push({name: 'Livros', params:{id: id, name:name}})
+    const dataSetLength = computed(() => {
+      return dataset.value.length;
+    });
+
+    const dataFiltered = () => {
+      filtered.value = dataset.value
+        .map((dataMap) => {
+          const nameTranform = dataMap.language.name.toLowerCase();
+          return { ...dataMap, nameTransform: nameTranform };
+        })
+        .filter((dataFilter) => {
+          return dataFilter.nameTransform.includes(filterName.value);
+        });
     };
 
-    return { dataset, loading, goToBible, reloadData };
+    const goToBible = (id, name) => {
+      router.push({ name: "Livros", params: { id: id, name: name } });
+    };
+
+    return {
+      dataset,
+      loading,
+      goToBible,
+      reloadData,
+      dataSetLength,
+      dataFiltered,
+      filterName,
+      filtered,
+    };
   },
   components: {
     ContainerBiblias,
     Biblia,
-    
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.teste {
+  display: block;
+  max-width: 70%;
+  border: 1px solid red;
+  margin: 0 auto;
+  overflow: hidden;
+}
 .capa {
   display: flex;
   align-items: center;
@@ -106,6 +149,17 @@ export default {
           letter-spacing: 0.05em;
         }
       }
+      .bible-input {
+        margin: 2rem auto 0 auto;
+        width: 90%;
+        padding: 0.5rem;
+        border-radius: 10px;
+        border: 1px solid rgb(163, 161, 161);
+
+        &:focus {
+          outline: none;
+        }
+      }
     }
 
     .container-biblias {
@@ -120,8 +174,8 @@ export default {
         flex: 0 0 300px;
       }
 
-      .btn-reload{
-        padding: .4rem .6rem;
+      .btn-reload {
+        padding: 0.4rem 0.6rem;
         text-align: center;
         justify-content: center;
         text-align: center;
@@ -129,9 +183,9 @@ export default {
         color: white;
         background: var(--blue1);
         cursor: pointer;
-        transition: .2s ease-in;
+        transition: 0.2s ease-in;
 
-        &:hover{
+        &:hover {
           background: var(--blue2);
         }
       }
