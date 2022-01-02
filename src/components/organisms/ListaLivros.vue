@@ -22,8 +22,7 @@ export default {
     const router = useRouter();
 
     const goChapters = (item) => {
-      console.log(item)
-      router.push({name: 'PaginaLivro', params:{id: item.bibleId, bookId: item.id, title: item.nameLong }})
+      router.push({name: 'PaginaLivro', params:{id: item.bibleId, bookId: item.id, title: item.nameLong, nameBook: item.abbreviation }})
     };
     return { goChapters };
   },
